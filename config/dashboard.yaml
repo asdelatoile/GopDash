@@ -54,12 +54,14 @@ widgets:
     title: Media
     icon: lucide:video
     group: Media
+    columns: 2   # défaut : 3
 
   - type: bookmarks
     id: bookmarks-infra
     title: Infrastructure
     icon: lucide:network
     group: Infrastructure
+    columns: 2
 
   - type: rss
     id: rss-tech

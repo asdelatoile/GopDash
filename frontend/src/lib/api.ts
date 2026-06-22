@@ -78,6 +78,11 @@ export const api = {
 
 	getRss: (feed: string) => request<import('./types').RssFeedData>(`/rss/${encodeURIComponent(feed)}`),
 
+	getBookmarkHealth: (group?: string) => {
+		const qs = group ? `?group=${encodeURIComponent(group)}` : '';
+		return request<import('./types').BookmarkHealthResult[]>(`/bookmarks/health${qs}`);
+	},
+
 	saveLayout: (widgets: import('./types').WidgetLayout[]) =>
 		request<import('./types').LayoutSaveResponse>('/config/layout', {
 			method: 'PUT',

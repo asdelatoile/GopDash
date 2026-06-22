@@ -25,6 +25,7 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/system", get(system_metrics))
         .route("/weather", get(weather))
         .route("/bookmarks", get(bookmarks))
+        .route("/bookmarks/health", get(bookmarks_health))
         .route("/rss/{feed}", get(rss_feed))
 }
 
@@ -252,6 +253,28 @@ async fn bookmarks(
         config.bookmarks
     };
     Ok(Json(groups))
+}
+
+async fn bookmarks_health(
+    State(state): State<Arc<AppState>>,
+    Query(q): Query<BookmarkQuery>,
+) -> AppResult<Json<Vec<crate::services::health::BookmarkHealthResult>>> {
+    let config = state.config.get().await;
+    let groups: Vec<_> = if let Some(ref name) = q.group {
+        config.bookmarks.iter().filter(|g| &g.name == name).collect()
+    } else {
+        config.bookmarks.iter().collect()
+    };
+
+    let links: Vec<(&str, &crate::config::BookmarkLink)> = groups
+        .iter()
+        .flat_map(|g| g.links.iter().map(|l| (g.name.as_str(), l)))
+        .collect();
+
+    let cache_secs = config.refresh_interval.max(15);
+    let results = state.health.check_bookmarks(&links, cache_secs).await;
+
+    Ok(Json(results))
 }
 
 async fn rss_feed(

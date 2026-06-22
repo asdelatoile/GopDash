@@ -25,9 +25,14 @@ bookmarks:
         url: https://jellyfin.local
         icon: sh:jellyfin
         description: Streaming
+        health_check: true
       - name: qBittorrent
         url: https://qbittorrent.local
         description: Torrents
+        # health_check: true              # active la pastille up/down
+        # health_url: https://...           # URL à sonder (défaut : url)
+        # expected_status: 302              # sinon 2xx = OK
+        # insecure: true                    # certificats auto-signés
 
 rss:
   - name: tech

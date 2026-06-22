@@ -6,9 +6,9 @@ layouts:
     h: 9
   bookmarks-media:
     x: 0
-    y: 40
+    y: 34
     w: 4
-    h: 9
+    h: 15
   calendar-1:
     x: 9
     y: 21
@@ -18,7 +18,7 @@ layouts:
     x: 0
     y: 23
     w: 4
-    h: 17
+    h: 11
   rss-selfhosted:
     x: 4
     y: 27

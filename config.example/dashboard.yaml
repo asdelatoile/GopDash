@@ -51,6 +51,7 @@ widgets:
     title: Media
     icon: sh:jellyfin
     group: Media
+    # columns: 3   # nombre de colonnes (défaut : 3)
 
   - type: rss
     id: rss-tech

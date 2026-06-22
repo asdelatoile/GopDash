@@ -130,6 +130,8 @@ pub enum WidgetConfig {
         #[serde(default = "default_h")]
         h: i32,
         group: String,
+        #[serde(default = "default_bookmark_columns")]
+        columns: u32,
         #[serde(default = "default_show_header")]
         show_header: bool,
     },
@@ -204,6 +206,10 @@ fn default_h() -> i32 {
 }
 fn default_collapse_groups() -> bool {
     true
+}
+
+fn default_bookmark_columns() -> u32 {
+    3
 }
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, Default, PartialEq, Eq)]
@@ -399,6 +405,28 @@ pub struct BookmarkLink {
     pub url: String,
     pub icon: Option<String>,
     pub description: Option<String>,
+    /// Active le ping HTTP (pastille up/down sur le widget bookmarks)
+    #[serde(default)]
+    pub health_check: bool,
+    /// URL à sonder (défaut : url du lien)
+    pub health_url: Option<String>,
+    #[serde(default = "default_health_method")]
+    pub method: String,
+    #[serde(default = "default_health_timeout")]
+    pub timeout_secs: u64,
+    /// Code HTTP attendu (sinon 2xx = OK)
+    pub expected_status: Option<u16>,
+    /// Accepter les certificats TLS auto-signés
+    #[serde(default)]
+    pub insecure: bool,
+}
+
+fn default_health_method() -> String {
+    "GET".into()
+}
+
+fn default_health_timeout() -> u64 {
+    5
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

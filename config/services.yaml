@@ -22,9 +22,24 @@ bookmarks:
   - name: Media
     links:
       - name: Jellyfin
-        url: https://jellyfin.local
+        url: https://flix.wegop.com
         icon: sh:jellyfin
         description: Streaming
+        health_check: true
+      - name: Radarr
+        url: https://radarr.wegop.com
+        icon: sh:radarr
+        health_check: true
+      - name: Sonarr
+        url: https://sonarr.wegop.com
+        icon: sh:sonarr
+        health_check: true
+      - name: Jackett
+        url: http://192.168.1.200:9117/
+        icon: sh:jackett
+        health_check: true
+        health_url: http://192.168.1.200:9117/UI/Login
+        expected_status: 302
       - name: qBittorrent
         url: https://qbittorrent.local
         description: Torrents

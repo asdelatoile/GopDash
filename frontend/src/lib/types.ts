@@ -24,7 +24,7 @@ export type WidgetConfig =
 			collapse_groups?: boolean;
 	  })
 	| (BaseWidget & { type: 'weather'; location?: string; units?: string; show_forecast?: boolean })
-	| (BaseWidget & { type: 'bookmarks'; group?: string })
+	| (BaseWidget & { type: 'bookmarks'; group?: string; /** Nombre de colonnes (défaut : 3) */ columns?: number })
 	| (BaseWidget & { type: 'rss'; feed?: string; max_items?: number })
 	| (BaseWidget & {
 			type: 'calendar';
@@ -149,7 +149,26 @@ export interface BookmarkLink {
 	url: string;
 	icon?: string;
 	description?: string;
+	/** Active le ping HTTP (pastille up/down) */
+	health_check?: boolean;
+	/** URL à sonder (défaut : url) */
+	health_url?: string;
+	method?: string;
+	timeout_secs?: number;
+	expected_status?: number;
+	insecure?: boolean;
 }
+
+export interface BookmarkHealthResult {
+	name: string;
+	url: string;
+	status: HealthStatus;
+	status_code?: number;
+	latency_ms: number;
+	error?: string;
+}
+
+export type HealthStatus = 'up' | 'down';
 
 export interface RssFeedData {
 	name: string;

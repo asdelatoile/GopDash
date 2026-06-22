@@ -90,7 +90,7 @@ Gopdash/
 | `system` | CPU, RAM, disques, températures | `type: system` |
 | `docker` | Containers + actions start/stop/restart | `type: docker` |
 | `weather` | OpenWeatherMap current + 5 jours | `type: weather` |
-| `bookmarks` | Groupes de liens favoris | `type: bookmarks` |
+| `bookmarks` | Groupes de liens favoris (+ health check optionnel) | `type: bookmarks` + `columns` (défaut 3) |
 | `rss` | Flux RSS récents | `type: rss` |
 | `calendar` | Calendrier mensuel + horloge (locale / fuseau) | `type: calendar` + `show_today`, `show_outside_days`, `show_navigation` |
 | `search` | Recherche web multi-moteurs | `type: search` + `engine`, `target` |
@@ -133,6 +133,29 @@ Dans `config/dashboard.yaml` (un widget par moteur souhaité) :
   target: new-tab     # new-tab | same-tab
 ```
 
+### Health check sur les favoris
+
+Sur chaque lien dans `config/services.yaml` → `bookmarks`, active la surveillance HTTP :
+
+```yaml
+bookmarks:
+  - name: Media
+    links:
+      - name: Jellyfin
+        url: https://jellyfin.local
+        icon: sh:jellyfin
+        health_check: true
+      - name: Jackett
+        url: http://192.168.1.200:9117/
+        icon: sh:jackett
+        health_check: true
+        health_url: http://192.168.1.200:9117/UI/Login  # URL à sonder (défaut : url)
+        expected_status: 302   # sinon 2xx = OK
+        # insecure: true        # certificats auto-signés
+```
+
+Le widget `bookmarks` affiche une pastille verte/rouge et la latence. Rafraîchissement selon `refresh_interval` de `app.yaml`.
+
 ## API REST
 
 | Endpoint | Méthode | Description |
@@ -147,6 +170,7 @@ Dans `config/dashboard.yaml` (un widget par moteur souhaité) :
 | `/api/system` | GET | Métriques système |
 | `/api/weather` | GET | Météo |
 | `/api/bookmarks` | GET | Liens favoris |
+| `/api/bookmarks/health` | GET | Statut des liens avec `health_check` (`?group=Media`) |
 | `/api/rss/{feed}` | GET | Articles RSS |
 | `/api/events` | GET (SSE) | Mises à jour temps réel |
 

@@ -25,7 +25,7 @@ anyhow = "1"
 thiserror = "2"
 bollard = "0.18"
 sysinfo = "0.33"
-reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "cookies"] }
 rss = "2"
 chrono = { version = "0.4", features = ["serde"] }
 futures = "0.3"
